@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  client:
+    build: ./client
+    ports: 
+       - 5001:3000
+    networks:
+      - crud-net
+    depends_on:
+       - server
+
+  server:
+    build: ./server
+    ports:
+      - 5000:3001
+    networks:
+      - crud-net
+    depends_on:
+      - db
+    environment:
+      - USR=dhruvraj
+      - PASSWD=Simform@123
+      - HOST=localhost
+      - DB=employeedb
+  
+  db:
+    image: mysql
+    #build: ./
+    restart: always 
+    # environment:
+    #   - MYSQL_ROOT_PASSWORD=Simform@123
+    #   - MYSQL_DATABASE=employeedb
+    ports: 
+      - 3307:3306
+    volumes:
+      - database:/var/lib/mysql 
+    networks:
+      - crud-net
+
+volumes:
+  database: 
+networks:
+  crud-net:
+    driver: bridge
+
+
+
+   
